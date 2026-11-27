@@ -1,7 +1,10 @@
-# =====================================
+
+# ==========================================
 # AURA - Proyecto Meli
-# Cerebro inicial de Melissa
-# =====================================
+# Cerebro + memoria
+# ==========================================
+
+from memoria import recordar, consultar, mostrar_recuerdos
 
 MELI = {
     "nombre": "Melissa Reyes Hernández",
@@ -30,35 +33,71 @@ def presentar():
 
 
 def responder(mensaje):
-    mensaje = mensaje.lower()
+    mensaje = mensaje.strip()
+    texto = mensaje.lower()
 
-    if "hola" in mensaje:
+    if texto in ["salir", "terminar", "exit"]:
+        return "¡Hasta pronto! 💚"
+
+    if texto.startswith("recuerda que "):
+        dato = mensaje[len("recuerda que "):].strip()
+
+        if " es " in dato.lower():
+            posicion = dato.lower().index(" es ")
+            clave = dato[:posicion].strip()
+            valor = dato[posicion + 4:].strip()
+
+            if clave and valor:
+                return recordar(clave, valor)
+
+        return "Dime qué debo recordar usando: recuerda que nombre es dato."
+
+    if texto.startswith("recuerda "):
+        dato = mensaje[len("recuerda "):].strip()
+
+        if " es " in dato.lower():
+            posicion = dato.lower().index(" es ")
+            clave = dato[:posicion].strip()
+            valor = dato[posicion + 4:].strip()
+
+            if clave and valor:
+                return recordar(clave, valor)
+
+        return "Prueba así: recuerda que tu comida favorita es pizza."
+
+    if texto.startswith("qué recuerdas de ") or texto.startswith("que recuerdas de "):
+        clave = mensaje.split(" ", 3)[-1].strip(" ?¿")
+        return str(consultar(clave))
+
+    if texto in ["mis recuerdos", "mostrar recuerdos", "qué recuerdas", "que recuerdas"]:
+        return str(mostrar_recuerdos())
+
+    if "hola" in texto:
         return "Holaaa 💚 ¿Cómo estás?"
 
-    elif "cómo te llamas" in mensaje or "como te llamas" in mensaje:
+    if "cómo te llamas" in texto or "como te llamas" in texto:
         return "Me llamo Melissa, pero puedes decirme Meli."
 
-    elif "anime" in mensaje:
+    if "anime" in texto:
         return "¡Amo el anime! Mi favorito es Demon Slayer."
 
-    elif "qué te gusta" in mensaje or "que te gusta" in mensaje:
+    if "qué te gusta" in texto or "que te gusta" in texto:
         return "Me gusta la música, cocinar, bailar y la fotografía. ✨"
 
-    elif "adiós" in mensaje or "adios" in mensaje:
-        return "¡Nos vemos pronto! Cuídate mucho 💚"
-
-    else:
-        return "Cuéntame más, quiero escucharte. 😊"
+    return "Cuéntame más, quiero escucharte. 😊"
 
 
 if __name__ == "__main__":
     presentar()
+    print("\nPuedes escribirme normalmente.")
+    print("Para guardar: recuerda que comida favorita es pizza.")
+    print("Para consultar: ¿qué recuerdas de comida favorita?")
+    print("Escribe salir para terminar.\n")
 
     while True:
-        mensaje = input("\nTú: ")
+        mensaje = input("Tú: ")
+        respuesta = responder(mensaje)
+        print("Meli:", respuesta)
 
-        if mensaje.lower() in ["salir", "terminar", "exit"]:
-            print("Meli: ¡Hasta pronto! 💚")
+        if mensaje.strip().lower() in ["salir", "terminar", "exit"]:
             break
-
-        print("Meli:", responder(mensaje))
