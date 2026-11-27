@@ -65,9 +65,11 @@ def responder(mensaje):
 
         return "Prueba así: recuerda que tu comida favorita es pizza."
 
-    if texto.startswith("qué recuerdas de ") or texto.startswith("que recuerdas de "):
-        clave = mensaje.split(" ", 3)[-1].strip(" ?¿")
-        return str(consultar(clave))
+        if texto.startswith("qué recuerdas de ") or texto.startswith("que recuerdas de "):
+        clave = texto.replace("¿", "").replace("?", "")
+        clave = clave.replace("qué recuerdas de ", "", 1)
+        clave = clave.replace("que recuerdas de ", "", 1)
+        return str(consultar(clave.strip()))
 
     if texto in ["mis recuerdos", "mostrar recuerdos", "qué recuerdas", "que recuerdas"]:
         return str(mostrar_recuerdos())
