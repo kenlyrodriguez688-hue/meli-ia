@@ -37,7 +37,7 @@ def presentar():
 
 def responder(mensaje):
     mensaje = mensaje.strip()
-    texto = mensaje.lower()
+    texto = mensaje.lower().replace("¿", "").replace("?", "").strip()
 
     if texto in ["salir", "terminar", "exit"]:
         return "¡Hasta pronto! 💚"
