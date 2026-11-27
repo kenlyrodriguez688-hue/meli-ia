@@ -1,7 +1,7 @@
 
 # ==========================================
 # AURA - Proyecto Meli
-# Cerebro + memoria
+# Cerebro principal + memoria
 # ==========================================
 
 from memoria import recordar, consultar, mostrar_recuerdos
@@ -15,6 +15,7 @@ MELI = {
     "ojos": "Verdes",
     "cabello": "Negro y liso",
     "anime_favorito": "Demon Slayer",
+    "comida_favorita": "Spaghetti",
     "intereses": [
         "Anime",
         "Música",
@@ -30,6 +31,8 @@ def presentar():
     print("Estoy aquí para conversar contigo.")
     print("Me encanta el anime, la música y la fotografía.")
     print("Mi anime favorito es Demon Slayer.")
+    print("Mi comida favorita es el spaghetti. 🍝")
+    print("Escribe 'salir' para terminar.\n")
 
 
 def responder(mensaje):
@@ -39,6 +42,7 @@ def responder(mensaje):
     if texto in ["salir", "terminar", "exit"]:
         return "¡Hasta pronto! 💚"
 
+    # Guardar recuerdos
     if texto.startswith("recuerda que "):
         dato = mensaje[len("recuerda que "):].strip()
 
@@ -52,58 +56,43 @@ def responder(mensaje):
 
         return "Dime qué debo recordar usando: recuerda que nombre es dato."
 
-        if texto.startswith("qué recuerdas de ") or texto.startswith("que recuerdas de "):
-        clave = texto.replace("¿", "").replace("?", "")
-        clave = clave.replace("qué recuerdas de ", "", 1)
-        clave = clave.replace("que recuerdas de ", "", 1)
-        return str(consultar(clave.strip()))
-        dato = mensaje[len("recuerda "):].strip()
-
-        if " es " in dato.lower():
-            posicion = dato.lower().index(" es ")
-            clave = dato[:posicion].strip()
-            valor = dato[posicion + 4:].strip()
-
-            if clave and valor:
-                return recordar(clave, valor)
-
-        return "Prueba así: recuerda que tu comida favorita es pizza."
-
-        if texto.startswith("qué recuerdas de ") or texto.startswith("que recuerdas de "):
+    # Consultar un recuerdo concreto
+    if texto.startswith("¿qué recuerdas de ") or texto.startswith("que recuerdas de ") or texto.startswith("qué recuerdas de "):
         clave = texto.replace("¿", "").replace("?", "")
         clave = clave.replace("qué recuerdas de ", "", 1)
         clave = clave.replace("que recuerdas de ", "", 1)
         return str(consultar(clave.strip()))
 
+    # Mostrar todos los recuerdos
     if texto in ["mis recuerdos", "mostrar recuerdos", "qué recuerdas", "que recuerdas"]:
         return str(mostrar_recuerdos())
 
-    if "hola" in texto:
+    # Personalidad y datos de Meli
+    if "hola" in texto or "buenas" in texto:
         return "Holaaa 💚 ¿Cómo estás?"
 
     if "cómo te llamas" in texto or "como te llamas" in texto:
-        return "Me llamo Melissa, pero puedes decirme Meli."
+        return "Me llamo Melissa, pero puedes decirme Meli. 💚"
+
+    if "comida favorita" in texto:
+        return "¡Mi comida favorita es el spaghetti! 🍝"
 
     if "anime" in texto:
-        return "¡Amo el anime! Mi favorito es Demon Slayer."
+        return "¡Mi anime favorito es Demon Slayer! ⚔️"
 
     if "qué te gusta" in texto or "que te gusta" in texto:
-        return "Me gusta la música, cocinar, bailar y la fotografía. ✨"
+        return "Me encanta el anime, la música, cocinar, bailar y la fotografía. ✨"
 
     return "Cuéntame más, quiero escucharte. 😊"
 
 
 if __name__ == "__main__":
     presentar()
-    print("\nPuedes escribirme normalmente.")
-    print("Para guardar: recuerda que comida favorita es pizza.")
-    print("Para consultar: ¿qué recuerdas de comida favorita?")
-    print("Escribe salir para terminar.\n")
 
     while True:
         mensaje = input("Tú: ")
         respuesta = responder(mensaje)
         print("Meli:", respuesta)
 
-        if mensaje.strip().lower() in ["salir", "terminar", "exit"]:
+        if mensaje.lower().strip() in ["salir", "terminar", "exit"]:
             break
