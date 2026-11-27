@@ -52,7 +52,11 @@ def responder(mensaje):
 
         return "Dime qué debo recordar usando: recuerda que nombre es dato."
 
-    if texto.startswith("recuerda "):
+        if texto.startswith("qué recuerdas de ") or texto.startswith("que recuerdas de "):
+        clave = texto.replace("¿", "").replace("?", "")
+        clave = clave.replace("qué recuerdas de ", "", 1)
+        clave = clave.replace("que recuerdas de ", "", 1)
+        return str(consultar(clave.strip()))
         dato = mensaje[len("recuerda "):].strip()
 
         if " es " in dato.lower():
